@@ -3,6 +3,7 @@ CFLAGS = -std=c99 -Wall -Wextra
 LDFLAGS =
 SRCDIR = src
 INCDIR = include
+TESTDIR = test
 BUILDDIR = build
 TARGET = typing_test
 
@@ -22,3 +23,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 
 clean:
 	rm -rf $(BUILDDIR)/*.o $(TARGET)
+
+test: $(OBJS)
+	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/typingtest.c $(TESTDIR)/test.c -o $(BUILDDIR)/test
+	$(BUILDDIR)/test
