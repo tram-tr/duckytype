@@ -7,31 +7,31 @@
 #include <limits.h>
 
 void test_loadParagraphs() {
-    TypingTest typingTest;
-    memset(&typingTest, 0, sizeof(TypingTest));
-    char currentPath[PATH_MAX];
-    if (getcwd(currentPath, sizeof(currentPath)) == NULL) {
+    TypingTest typing_test;
+    memset(&typing_test, 0, sizeof(TypingTest));
+    char current_path[PATH_MAX];
+    if (getcwd(current_path, sizeof(current_path)) == NULL) {
         fprintf(stderr, "Failed to get the current working directory.\n");
         return;
     }
-    char absolutePath[PATH_MAX];
-    snprintf(absolutePath, sizeof(absolutePath), "%s/data/paragraphs.txt", currentPath);
-    loadParagraphs(&typingTest, absolutePath);
-    assert(typingTest.numParagraphs == 10);
+    char absolute_path[PATH_MAX];
+    snprintf(absolute_path, sizeof(absolute_path), "%s/data/paragraphs.txt", current_path);
+    loadParagraphs(&typing_test, absolute_path);
+    assert(typing_test.num_paragraphs == 10);
 }
 
 void test_getRandomParagraph() {
-    TypingTest typingTest;
-    memset(&typingTest, 0, sizeof(TypingTest));
-    char currentPath[PATH_MAX];
-    if (getcwd(currentPath, sizeof(currentPath)) == NULL) {
+    TypingTest typing_test;
+    memset(&typing_test, 0, sizeof(TypingTest));
+    char current_path[PATH_MAX];
+    if (getcwd(current_path, sizeof(current_path)) == NULL) {
         fprintf(stderr, "Failed to get the current working directory.\n");
         return;
     }
-    char absolutePath[PATH_MAX];
-    snprintf(absolutePath, sizeof(absolutePath), "%s/data/paragraphs.txt", currentPath);
-    loadParagraphs(&typingTest, absolutePath);
-    char* paragraph = getRandomParagraph(&typingTest);
+    char absolute_path[PATH_MAX];
+    snprintf(absolute_path, sizeof(absolute_path), "%s/data/paragraphs.txt", current_path);
+    loadParagraphs(&typing_test, absolute_path);
+    char* paragraph = getRandomParagraph(&typing_test);
     assert(paragraph != NULL);
 }
 

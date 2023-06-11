@@ -5,7 +5,7 @@ SRCDIR = src
 INCDIR = include
 TESTDIR = test
 BUILDDIR = build
-TARGET = typing_test
+TARGET = duckytype
 
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
