@@ -1,5 +1,5 @@
-# Duckytype
+# Meattype
 
 A simple typing test program implemented in C 
 
-Duckytype allows you to practice typing by displaying random paragraphs and measuring your typing speed.
+Meattype allows you to practice typing by displaying random paragraphs (of different types of meat...) and measuring your typing speed.
