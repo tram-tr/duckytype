@@ -1,8 +1,4 @@
 #include "../include/typingtest.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
 void loadParagraphs(TypingTest* typingTest, const char* filename) {
     FILE* file = fopen(filename, "r");
@@ -50,15 +46,15 @@ void loadParagraphs(TypingTest* typingTest, const char* filename) {
     fclose(file);
 }
 
-char* getRandomParagraph(const TypingTest* typingTest) {
+char* getRandomParagraph(TypingTest* typingTest) {
     int index = rand() % typingTest->numParagraphs;
     return typingTest->paragraphs[index];
 }
 
-void printParagraph(const char* paragraph, int currentPosition) {
+void printParagraph(const char* paragraph, size_t currentPosition) {
     printf(ANSI_CLEAR_LINE);
     printf(ANSI_RESET_CURSOR);
-    for (int i = 0; i < strlen(paragraph); i++) {
+    for (size_t i = 0; i < strlen(paragraph); i++) {
         if (i < currentPosition) {
             printf(ANSI_COLOR_GREEN "%c" ANSI_COLOR_RESET, paragraph[i]);
         } else if (i == currentPosition) {

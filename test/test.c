@@ -14,12 +14,25 @@ void test_loadParagraphs() {
         fprintf(stderr, "Failed to get the current working directory.\n");
         return;
     }
-    printf("Working directory: %s\n", currentPath);
     char absolutePath[PATH_MAX];
     snprintf(absolutePath, sizeof(absolutePath), "%s/data/paragraphs.txt", currentPath);
-    printf("File path: %s\n", absolutePath);
     loadParagraphs(&typingTest, absolutePath);
     assert(typingTest.numParagraphs == 10);
+}
+
+void test_getRandomParagraph() {
+    TypingTest typingTest;
+    memset(&typingTest, 0, sizeof(TypingTest));
+    char currentPath[PATH_MAX];
+    if (getcwd(currentPath, sizeof(currentPath)) == NULL) {
+        fprintf(stderr, "Failed to get the current working directory.\n");
+        return;
+    }
+    char absolutePath[PATH_MAX];
+    snprintf(absolutePath, sizeof(absolutePath), "%s/data/paragraphs.txt", currentPath);
+    loadParagraphs(&typingTest, absolutePath);
+    char* paragraph = getRandomParagraph(&typingTest);
+    assert(paragraph != NULL);
 }
 
 int main() {
