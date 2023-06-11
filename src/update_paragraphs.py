@@ -30,6 +30,7 @@ def update_paragraphs_file(paragraphs):
         # Open the paragraphs.txt file in write mode
         with open("../data/paragraphs.txt", "w") as file:
             for paragraph in paragraphs:
+                paragraph = ' '.join(paragraph.split('  '))
                 file.write(paragraph + "\n\n")
 
         print("paragraphs.txt updated successfully.")
