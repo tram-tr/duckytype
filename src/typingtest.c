@@ -49,3 +49,31 @@ void loadParagraphs(TypingTest* typingTest, const char* filename) {
     }
     fclose(file);
 }
+
+char* getRandomParagraph(const TypingTest* typingTest) {
+    int index = rand() % typingTest->numParagraphs;
+    return typingTest->paragraphs[index];
+}
+
+void printParagraph(const char* paragraph, int currentPosition) {
+    printf(ANSI_CLEAR_LINE);
+    printf(ANSI_RESET_CURSOR);
+    for (int i = 0; i < strlen(paragraph); i++) {
+        if (i < currentPosition) {
+            printf(ANSI_COLOR_GREEN "%c" ANSI_COLOR_RESET, paragraph[i]);
+        } else if (i == currentPosition) {
+            printf(ANSI_COLOR_RED "%c" ANSI_COLOR_RESET, paragraph[i]);
+        } else {
+            printf("%c", paragraph[i]);
+        }
+    }
+}
+
+void run(TypingTest* typingTest) {
+    srand(time(NULL));
+    while (1) {
+        char* targetParagraph = getRandomParagraph(typingTest);
+        int currentPosition = 0;
+        printParagraph(targetParagraph, currentPosition);
+    }
+}
