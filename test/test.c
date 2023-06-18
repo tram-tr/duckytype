@@ -19,6 +19,7 @@ void test_loadParagraph() {
     printf("Loading paragraph from: %s\n", absolute_path);
     loadParagraph(&typing_test, absolute_path);
     printf("Number of paragraphs loaded: %d\n", typing_test.num_paragraphs);
+    printf("Current paragraph: %s\n", typing_test.paragraphs[0]); // Print the current paragraph
     assert(typing_test.num_paragraphs == 1);
 }
 

@@ -1,0 +1,4 @@
+# .gitignore
+
+# Ignore env_vars.txt file
+env_vars.txt

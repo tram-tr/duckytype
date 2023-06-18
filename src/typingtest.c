@@ -7,43 +7,73 @@ void loadParagraph(TypingTest* typing_test, const char* filename) {
         return;
     }
 
-    char paragraph[1024];
-    char line[256];
+    char line[1024];
+    int num_lines = 0;
+    int num_paragraphs = 0;
 
-    typing_test->paragraphs = NULL;
-    typing_test->num_paragraphs = 0;
+    // Count the number of lines and paragraphs in the file
+    while (fgets(line, sizeof(line), file)) {
+        if (line[0] == '\n') {
+            // Increment the number of paragraphs when encountering an empty line
+            num_paragraphs++;
+        }
+        num_lines++;
+    }
 
-    for (int i = 0; i < 1; i++) {  // Load only one paragraph
-        if (fgets(line, sizeof(line), file) == NULL) {
-            break;  // Break if no more lines are available
+    // Set the number of paragraphs in the TypingTest object
+    typing_test->num_paragraphs = num_paragraphs;
+
+    // Allocate memory for the array of paragraphs
+    typing_test->paragraphs = (char**)malloc(num_paragraphs * sizeof(char*));
+    if (typing_test->paragraphs == NULL) {
+        fprintf(stderr, "Memory allocation failed.\n");
+        fclose(file);
+        return;
+    }
+
+    // Reset the file pointer to the beginning of the file
+    fseek(file, 0, SEEK_SET);
+
+    int paragraph_index = 0;
+    int line_index = 0;
+
+    // Load the paragraphs into the TypingTest object
+    while (fgets(line, sizeof(line), file)) {
+        size_t line_length = strlen(line);
+
+        // Skip empty lines
+        if (line[0] == '\n') {
+            continue;
         }
 
-        line[strcspn(line, "\n")] = '\0';
-        if (line[0] == '\0') {
-            if (paragraph[strlen(paragraph) - 1] == ' ')
-                paragraph[strlen(paragraph) - 1] = '\0';
+        // Remove the newline character from the end of the line
+        if (line[line_length - 1] == '\n') {
+            line[line_length - 1] = '\0';
+        }
 
-            // Allocate memory for the new paragraph and copy the content
-            char* new_paragraph = strdup(paragraph);
-            if (new_paragraph == NULL) {
-                fprintf(stderr, "Memory allocation failed.\n");
-                fclose(file);
-                return;
-            }
+        // Allocate memory for the current line and copy the content
+        char* new_line = strdup(line);
+        if (new_line == NULL) {
+            fprintf(stderr, "Memory allocation failed.\n");
+            fclose(file);
+            return;
+        }
 
-            // Resize the array of paragraphs and add the new paragraph
-            typing_test->paragraphs = realloc(typing_test->paragraphs, (typing_test->num_paragraphs + 1) * sizeof(char*));
-            if (typing_test->paragraphs == NULL) {
-                fprintf(stderr, "Memory allocation failed.\n");
-                fclose(file);
-                return;
-            }
+        // append the line to the current paragraph
+        typing_test->paragraphs[paragraph_index] = (char*)realloc(typing_test->paragraphs[paragraph_index], (line_index + 1) * sizeof(char));
+        if (typing_test->paragraphs[paragraph_index] == NULL) {
+            fprintf(stderr, "Memory allocation failed.\n");
+            fclose(file);
+            return;
+        }
+        strcpy(typing_test->paragraphs[paragraph_index] + line_index, new_line);
 
-            // Add the new paragraph to the array
-            typing_test->paragraphs[typing_test->num_paragraphs++] = new_paragraph;
-        } else {
-            strcat(paragraph, line);
-            strcat(paragraph, " ");
+        line_index++;
+
+        // Check if the current line is the end of a paragraph
+        if (line[0] == '\n') {
+            paragraph_index++;
+            line_index = 0;
         }
     }
 

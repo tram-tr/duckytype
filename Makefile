@@ -26,7 +26,7 @@ fetch_paragraph:
 	$(BUILDDIR)/fetch_data
 
 clean:
-	rm -rf $(BUILDDIR)/*.o $(TARGET)
+	rm -rf $(BUILDDIR)/*.o $(TARGET) $(BUILDDIR)/test $(BUILDDIR)/fetch_data
 
 test: $(OBJS)
 	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCDIR)/typingtest.c $(TESTDIR)/test.c -o $(BUILDDIR)/test

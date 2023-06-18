@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
+#include <string.h>
+#include <unistd.h>
+#include <limits.h>
 
 #define TARGET_WORD_COUNT 350
 
@@ -32,10 +35,24 @@ int main() {
     CURL *curl = curl_easy_init();
     CURLcode res = CURLE_OK;
     char *url = "https://random-word-by-api-ninjas.p.rapidapi.com/v1/randomword?type=verb";
-    FILE *file = fopen("../data/paragraph.txt", "w");
+    char current_path[PATH_MAX];
+    if (getcwd(current_path, sizeof(current_path)) == NULL) {
+        fprintf(stderr, "Failed to get the current working directory.\n");
+        return 1;
+    }
+    char absolute_path[PATH_MAX];
+    snprintf(absolute_path, sizeof(absolute_path), "%s/data/paragraph.txt", current_path);
+    FILE *file = fopen(absolute_path, "w");
 
     if (file == NULL) {
         fprintf(stderr, "Failed to open the file.\n");
+        return 1;
+    }
+
+    // retrieve the API key from the environment variable
+    char* api_key = getenv("API_KEY");
+    if (api_key == NULL) {
+        fprintf(stderr, "API_KEY environment variable is not set.\n");
         return 1;
     }
 
@@ -48,7 +65,9 @@ int main() {
 
         // set the custom headers
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "X-RapidAPI-Key: 5df4435f4dmsh807f019b58e885cp193981jsn2e05fa26930f");
+        char header_api_key[128];
+        snprintf(header_api_key, sizeof(header_api_key), "X-RapidAPI-Key: %s", api_key);
+        headers = curl_slist_append(headers, header_api_key);
         headers = curl_slist_append(headers, "X-RapidAPI-Host: random-word-by-api-ninjas.p.rapidapi.com");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
@@ -79,11 +98,11 @@ int main() {
                     word_count++;
                 }
             }
-
             free(response.data);
             response.data = NULL;
             response.size = 0;
         }
+        fprintf(file, "\n");
     }
 
     fclose(file);
@@ -91,7 +110,9 @@ int main() {
     // check if fetch_data was successful
     if (res != CURLE_OK) {
         fprintf(stderr, "Fetch data failed. Falling back to the previous default_paragraph.txt file.\n");
-        FILE *default_file = fopen("../data/default_paragraph.txt", "r");
+        char default_path[PATH_MAX];
+        snprintf(default_path, sizeof(default_path), "%s/data/default_paragraph.txt", current_path);
+        FILE *default_file = fopen(default_path, "r");
         if (default_file == NULL) {
             fprintf(stderr, "Failed to open the default_paragraph.txt file.\n");
             return 1;
@@ -101,7 +122,7 @@ int main() {
         while ((ch = fgetc(default_file)) != EOF) {
             fputc(ch, file);
         }
-
+        fprintf(default_file, "\n");
         fclose(default_file);
     }
 
