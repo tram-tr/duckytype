@@ -20,6 +20,8 @@
 #define MAX_PARAGRAPH_LENGTH 4096
 #define MAX_USER_INPUT_LENGTH 4096
 #define TIME_LIMIT_SECONDS 60
+#define MAX_WORDS 350
+#define MAX_LENGTH 50
 
 typedef struct {
     char** paragraphs;

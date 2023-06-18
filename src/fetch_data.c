@@ -102,7 +102,6 @@ int main() {
             response.data = NULL;
             response.size = 0;
         }
-        fprintf(file, "\n");
     }
 
     fclose(file);
@@ -122,7 +121,6 @@ int main() {
         while ((ch = fgetc(default_file)) != EOF) {
             fputc(ch, file);
         }
-        fprintf(default_file, "\n");
         fclose(default_file);
     }
 
