@@ -1,6 +1,6 @@
 #include "../include/typingtest.h"
 
-void loadParagraph(TypingTest* typing_test, const char* filename) {
+void load_paragraph(TypingTest* typing_test, const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         fprintf(stderr, "Failed to open file: %s\n", filename);
@@ -40,7 +40,7 @@ void loadParagraph(TypingTest* typing_test, const char* filename) {
     fclose(file);
 }
 
-void printParagraph(const char* paragraph) {
+void print_paragraph(const char* paragraph) {
     printf(ANSI_CLEAR_LINE);
     printf(ANSI_RESET_CURSOR);
 
@@ -49,11 +49,11 @@ void printParagraph(const char* paragraph) {
     }
 }
 
-void runTypingTest(TypingTest* typing_test) {
+void run_typingtest(TypingTest* typing_test) {
     srand(time(NULL));
     while (1) {
         char* target_paragraph = typing_test->paragraphs[0];
-        printParagraph(target_paragraph);
+        print_paragraph(target_paragraph);
 
         printf("\n\nType the paragraph above within %d seconds:\n", TIME_LIMIT_SECONDS);
         printf("Time start now!!!\n");

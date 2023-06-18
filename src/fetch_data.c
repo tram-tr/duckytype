@@ -1,3 +1,4 @@
+#include "../include/fetch_data.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +32,7 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata) {
     return data_size;
 }
 
-int main() {
+int fetch_data() {
     CURL *curl = curl_easy_init();
     CURLcode res = CURLE_OK;
     char *url = "https://random-word-by-api-ninjas.p.rapidapi.com/v1/randomword?type=verb";
