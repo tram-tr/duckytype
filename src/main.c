@@ -11,8 +11,8 @@ int main() {
         return 1;
     }
     char absolute_path[PATH_MAX];
-    snprintf(absolute_path, sizeof(absolute_path), "%s/data/paragraphs.txt", current_path);
-    loadParagraphs(&typing_test, absolute_path);
+    snprintf(absolute_path, sizeof(absolute_path), "%s/data/paragraph.txt", current_path);
+    loadParagraph(&typing_test, absolute_path);
 
     printf("Welcome to the Typing Test!\n");
     printf("Press Enter to start the test...\n");

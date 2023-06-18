@@ -26,7 +26,7 @@ typedef struct {
     int num_paragraphs;
 } TypingTest;
 
-void loadParagraphs(TypingTest* typing_test, const char* filename);
+void loadParagraph(TypingTest* typing_test, const char* filename);
 void runTypingTest(TypingTest* typing_test);
 char* getRandomParagraph(TypingTest* typing_test);
 void printParagraph(const char* paragraph);

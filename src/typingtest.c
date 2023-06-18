@@ -1,6 +1,6 @@
 #include "../include/typingtest.h"
 
-void loadParagraphs(TypingTest* typing_test, const char* filename) {
+void loadParagraph(TypingTest* typing_test, const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         fprintf(stderr, "Failed to open file: %s\n", filename);
@@ -13,13 +13,17 @@ void loadParagraphs(TypingTest* typing_test, const char* filename) {
     typing_test->paragraphs = NULL;
     typing_test->num_paragraphs = 0;
 
-    while (fgets(line, sizeof(line), file)) {
+    for (int i = 0; i < 1; i++) {  // Load only one paragraph
+        if (fgets(line, sizeof(line), file) == NULL) {
+            break;  // Break if no more lines are available
+        }
+
         line[strcspn(line, "\n")] = '\0';
         if (line[0] == '\0') {
-            if (paragraph[strlen(paragraph) - 1] == ' ') 
+            if (paragraph[strlen(paragraph) - 1] == ' ')
                 paragraph[strlen(paragraph) - 1] = '\0';
-            
-            // allocate memory for the new paragraph and copy the content
+
+            // Allocate memory for the new paragraph and copy the content
             char* new_paragraph = strdup(paragraph);
             if (new_paragraph == NULL) {
                 fprintf(stderr, "Memory allocation failed.\n");
@@ -27,7 +31,7 @@ void loadParagraphs(TypingTest* typing_test, const char* filename) {
                 return;
             }
 
-            // resize the array of paragraphs and add the new paragraph
+            // Resize the array of paragraphs and add the new paragraph
             typing_test->paragraphs = realloc(typing_test->paragraphs, (typing_test->num_paragraphs + 1) * sizeof(char*));
             if (typing_test->paragraphs == NULL) {
                 fprintf(stderr, "Memory allocation failed.\n");
@@ -35,20 +39,15 @@ void loadParagraphs(TypingTest* typing_test, const char* filename) {
                 return;
             }
 
-            // add the new paragraph to the array
+            // Add the new paragraph to the array
             typing_test->paragraphs[typing_test->num_paragraphs++] = new_paragraph;
-            paragraph[0] = '\0';
         } else {
             strcat(paragraph, line);
-            strcat(paragraph, " "); 
+            strcat(paragraph, " ");
         }
     }
-    fclose(file);
-}
 
-char* getRandomParagraph(TypingTest* typing_test) {
-    int index = rand() % typing_test->num_paragraphs;
-    return typing_test->paragraphs[index];
+    fclose(file);
 }
 
 void printParagraph(const char* paragraph) {
@@ -63,7 +62,7 @@ void printParagraph(const char* paragraph) {
 void runTypingTest(TypingTest* typing_test) {
     srand(time(NULL));
     while (1) {
-        char* target_paragraph = getRandomParagraph(typing_test);
+        char* target_paragraph = typing_test->paragraphs[0];
         printParagraph(target_paragraph);
 
         printf("\n\nType the paragraph above within %d seconds:\n", TIME_LIMIT_SECONDS);

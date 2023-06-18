@@ -1,17 +1,17 @@
 CC = gcc
 CFLAGS = -std=c99 -Wall -Wextra
-LDFLAGS =
+LDFLAGS = -lcurl
 SRCDIR = src
 INCDIR = include
 TESTDIR = test
 BUILDDIR = build
-TARGET = meattype
+TARGET = duckytype
 
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
 DEPS = $(wildcard $(INCDIR)/*.h)
 
-.PHONY: all clean
+.PHONY: all clean fetch_paragraph
 
 all: $(TARGET)
 
@@ -20,6 +20,10 @@ $(TARGET): $(OBJS)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+
+fetch_paragraph:
+	$(CC) $(CFLAGS) $(SRCDIR)/fetch_data.c -lcurl -o $(BUILDDIR)/fetch_data
+	$(BUILDDIR)/fetch_data
 
 clean:
 	rm -rf $(BUILDDIR)/*.o $(TARGET)
